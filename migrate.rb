@@ -40,7 +40,11 @@ def put(url, payload)
   request = Net::HTTP::Put.new(url.path+'?access_token=verysecret')
   request.content_type = 'application/json'
   request.body = JSON.generate(payload)
-  response = http.start {|http| http.request(request) }
+  begin
+    response = http.start {|http| http.request(request) }
+  rescue
+    puts url
+  end
   begin
     return JSON.parse(response.body)
   rescue
@@ -116,7 +120,6 @@ def update(uid, params)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
-    dateofbirth: Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d'),
   }
   begin
     data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
