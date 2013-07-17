@@ -74,7 +74,7 @@ def create(params, membership)
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
     firstname: params[5],
     lastname: [params[6], params[7]].reject{|e| e.nil? or e.empty?}.join(' '),
-    email: params[3],
+    email: (params[3].nil? 'unknown@nieuwedelft.nl.invalid' : params[3]),
     gender: params[9] == 'Vrouw' ? 'F' : 'M',
     phone: params[14],
     mobile: params[2],
@@ -105,7 +105,7 @@ def update(uid, params)
   # Send payload to blip
   patch("https://people.i.bolkhuis.nl/persons/#{uid}", {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
-    email: params[3],
+    email: (params[3].nil? 'unknown@nieuwedelft.nl.invalid' : params[3]),
     gender: params[9] == 'Vrouw' ? 'F' : 'M',
     phone: params[14],
     mobile: params[2],
