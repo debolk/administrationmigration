@@ -4,7 +4,7 @@ require 'net/http'
 require 'csv'
 
 # Open needed files
-$problems = File.open('$problems.log', 'w')
+$problems = File.open('problems.log', 'w')
 
 # Open the blip API $index /persons
 blip = JSON.parse(Net::HTTP.get_response(URI.parse('https://people.i.bolkhuis.nl/persons?access_token=verysecret')).body)
