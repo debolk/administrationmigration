@@ -26,7 +26,7 @@ def post(url, payload)
     return JSON.parse(response.body)
   rescue
     # Log as a problematic case with rule number and line
-    $problems.write "#{$index}, #{payload}\n"
+    $problems.write "#{$index}, #{payload}, #{response.body}\n"
     return nil
   end
 end
@@ -44,7 +44,7 @@ def put(url, payload)
     return JSON.parse(response.body)
   rescue
     # Log as a problematic case with rule number and line
-    $problems.write "#{$index}, #{payload}\n"
+    $problems.write "#{$index}, #{payload}, #{response.body}\n"
     return nil
   end
 end
@@ -62,7 +62,7 @@ def patch(url, payload)
     return JSON.parse(response.body)
   rescue
     # Log as a problematic case with rule number and line
-    $problems.write "#{$index}, #{payload}\n"
+    $problems.write "#{$index}, #{payload}, #{response.body}\n"
     return nil
   end
 end
