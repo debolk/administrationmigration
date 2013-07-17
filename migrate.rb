@@ -173,7 +173,11 @@ CSV.foreach("data.csv") do |input|
     create(input, group)
   elsif count === 1
     # Update existing person
-    # update(uid, input)
+    
+    # Testcondition: only apply to Max and Jakob
+    if uid = 'max' or uid = 'jakob'
+      update(uid, input)
+    end
   else
     # Log as a problematic case with rule number and line
     $problems.write "#{$index}, #{input[0]}\n"
