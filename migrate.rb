@@ -4,6 +4,7 @@ exit
 # Load gems needed to talk to blip and operculum
 require 'json'
 require 'net/http'
+require 'csv'
 
 #
 # Some useful functions
@@ -113,7 +114,7 @@ blip = JSON.parse(Net::HTTP.get_response(URI.parse('https://people.i.bolkhuis.nl
 
 # Read every line
 index = 0
-IO.foreach "data.csv" do |line|
+CSV.foreach("data.csv") do |row|
   # Increment the index
   index += 1
 
@@ -122,21 +123,10 @@ IO.foreach "data.csv" do |line|
     next
   end
 
-  # Read the input
-  input = line.split(';')
-
-  # Remove parentheses
-  input.each do |e|
-    if e.length > 1
-      e[0] = ''
-      e[-1] = ''
-    end
-  end
-
   # Determine what to do based on the status of the member
   case input[1].downcase
   when 'gewoon lid'
-    group = 'gewoonlid'
+    group = 'lid'
   when 'in lid-afprocedure'
     group = 'lid'
   when 'kandidaat-lid'
