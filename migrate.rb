@@ -71,7 +71,7 @@ end
 # Creates a new user
 def create(params, membership)
   # Send payload to blip
-  blip = post('https://people.i.bolkhuis.nl/persons', {
+  data = {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
     firstname: (params[5].nil? ? params[4][0] : params[5]),
     lastname: [params[6], params[7]].reject{|e| e.nil? or e.empty?}.join(' '),
@@ -81,9 +81,14 @@ def create(params, membership)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
-    dateofbirth: Date.strptime(params[15], '%Y-%m-%d'),
     membership: membership,
-  })
+  }
+  begin
+    data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+  rescue
+    $problems.write "#{$index}, #{data[:firstname]} #{data[:lastname]}, Birthdate ignored\n"
+  end
+  blip = post('https://people.i.bolkhuis.nl/persons', data)
 
   # Grab uid
   unless blip == nil
@@ -103,8 +108,7 @@ end
 
 # Updates an existing user
 def update(uid, params)
-  # Send payload to blip
-  patch("https://people.i.bolkhuis.nl/persons/#{uid}", {
+  data = {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
     email: (params[3].nil? ? 'unknown@nieuwedelft.nl.invalid' : params[3]),
     gender: params[9] == 'Vrouw' ? 'F' : 'M',
@@ -112,8 +116,14 @@ def update(uid, params)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
-    dateofbirth: Date.strptime(params[15], '%Y-%m-%d'),
-  })
+    dateofbirth: Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d'),
+  }
+  begin
+    data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+  rescue
+    $problems.write "#{$index}, #{data[:firstname]} #{data[:lastname]}, Birthdate ignored\n"
+  end
+  patch("https://people.i.bolkhuis.nl/persons/#{uid}", data)
 
   # Send payload to operculum
   put("https://operculum.i.bolkhuis.nl/person/#{uid}", {
