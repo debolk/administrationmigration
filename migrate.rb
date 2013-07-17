@@ -118,7 +118,7 @@ def update(uid, params)
   put("https://operculum.i.bolkhuis.nl/persons/#{uid}", {
     nickname: params[8],
     study: params[16],
-    alive: !params[17].empty?,
+    alive: !params[17].nil?,
     inauguration: params[25],
     resignation_letter: params[26],
     resignation: params[27],
