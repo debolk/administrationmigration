@@ -175,7 +175,7 @@ CSV.foreach("data.csv") do |input|
     # Update existing person
     
     # Testcondition: only apply to Max and Jakob
-    if uid = 'max' or uid = 'jakob'
+    if uid == 'max' or uid == 'jakob'
       update(uid, input)
     end
   else
