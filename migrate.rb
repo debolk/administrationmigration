@@ -92,7 +92,7 @@ def create(params, membership)
       put("https://operculum.i.bolkhuis.nl/persons/#{uid}", {
       nickname: params[8],
       study: params[16],
-      alive: !params[17].nil?,
+      alive: params[17].nil?,
       inauguration: params[25],
       resignation_letter: params[26],
       resignation: params[27],
@@ -103,7 +103,7 @@ end
 # Updates an existing user
 def update(uid, params)
   # Send payload to blip
-  put("https://people.i.bolkhuis.nl/persons/#{uid}", {
+  patch("https://people.i.bolkhuis.nl/persons/#{uid}", {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
     email: params[3],
     gender: params[9] == 'Vrouw' ? 'F' : 'M',
@@ -118,7 +118,7 @@ def update(uid, params)
   put("https://operculum.i.bolkhuis.nl/persons/#{uid}", {
     nickname: params[8],
     study: params[16],
-    alive: !params[17].nil?,
+    alive: params[17].nil?,
     inauguration: params[25],
     resignation_letter: params[26],
     resignation: params[27],
