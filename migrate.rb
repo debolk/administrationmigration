@@ -2,6 +2,7 @@
 require 'json'
 require 'net/http'
 require 'csv'
+require 'date'
 
 # Open needed files
 $problems = File.open('problems.log', 'w')
@@ -80,7 +81,7 @@ def create(params, membership)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
-    dateofbirth: params[15],
+    dateofbirth: Date.strptime(params[15], '%Y-%m-%d'),
     membership: membership,
   })
 
@@ -111,7 +112,7 @@ def update(uid, params)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
-    dateofbirth: params[15],
+    dateofbirth: Date.strptime(params[15], '%Y-%m-%d'),
   })
 
   # Send payload to operculum
