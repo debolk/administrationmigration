@@ -72,7 +72,7 @@ def create(params, membership)
   # Send payload to blip
   blip = post('https://people.i.bolkhuis.nl/persons', {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
-    firstname: params[5],
+    firstname: (params[5].nil? ? params[4][0] : params[5]),
     lastname: [params[6], params[7]].reject{|e| e.nil? or e.empty?}.join(' '),
     email: (params[3].nil? ? 'unknown@nieuwedelft.nl.invalid' : params[3]),
     gender: params[9] == 'Vrouw' ? 'F' : 'M',
