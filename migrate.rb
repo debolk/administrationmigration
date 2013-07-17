@@ -53,7 +53,7 @@ def create(params, membership)
     firstname: params[5],
     lastname: [params[6], params[7]].reject{|e|e.empty?}.join(' '),
     email: params[3],
-    gender: params[9] == 'Man' ? 'M' : 'F',
+    gender: params[9] == 'Vrouw' ? 'M' : 'F',
     phone: params[14],
     mobile: params[2],
     phone_parents: params[24],
@@ -82,7 +82,7 @@ def update(uid, params)
   put("https://people.i.bolkhuis.nl/persons/#{uid}", {
     initials: params[4],
     email: params[3],
-    gender: params[9] == 'Man' ? 'M' : 'F',
+    gender: params[9] == 'Vrouw' ? 'M' : 'F',
     phone: params[14],
     mobile: params[2],
     phone_parents: params[24],
