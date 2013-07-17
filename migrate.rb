@@ -89,7 +89,7 @@ def create(params, membership)
     uid = blip['uid']
 
     # Send payload to operculum
-      put("https://operculum.i.bolkhuis.nl/persons/#{uid}", {
+      put("https://operculum.i.bolkhuis.nl/person/#{uid}", {
       nickname: params[8],
       study: params[16],
       alive: params[17].nil?,
@@ -115,7 +115,7 @@ def update(uid, params)
   })
 
   # Send payload to operculum
-  put("https://operculum.i.bolkhuis.nl/persons/#{uid}", {
+  put("https://operculum.i.bolkhuis.nl/person/#{uid}", {
     nickname: params[8],
     study: params[16],
     alive: params[17].nil?,
