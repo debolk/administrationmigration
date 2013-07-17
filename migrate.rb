@@ -46,7 +46,7 @@ def patch(url, payload)
 end
 
 # Creates a new user
-def create(params)
+def create(params, membership)
   # Send payload to blip
   blip = post('https://people.i.bolkhuis.nl/persons', {
     initials: params[4],
@@ -59,6 +59,7 @@ def create(params)
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
     dateofbirth: params[15],
+    membership: membership,
   })
 
   # Grab uid
@@ -124,7 +125,7 @@ IO.foreach "data.csv" do |line|
   # Read the input
   input = line.split(';')
 
-  # Remove parenthesis
+  # Remove parentheses
   input.each do |e|
     if e.length > 1
       e[0] = ''
@@ -134,15 +135,15 @@ IO.foreach "data.csv" do |line|
 
   # Determine what to do based on the status of the member
   case input[1].downcase
-  when '"gewoon lid"'
+  when 'gewoon lid'
     group = 'gewoonlid'
-  when '"in lid-afprocedure"'
+  when 'in lid-afprocedure'
     group = 'lid'
-  when '"kandidaat-lid"'
+  when 'kandidaat-lid'
     group = 'kandidaatlid'
-  when '"lid van verdienste"'
+  when 'lid van verdienste'
     group = 'lidvanverdienste'
-  when '"oud-lid"'
+  when 'oud-lid'
     group = 'oudlid'
   else
     next # Skip this member, do not save to LDAP
@@ -153,7 +154,7 @@ IO.foreach "data.csv" do |line|
   count = 0
   uid = nil
   blip.each do |entry|
-    if '"'+(entry['name'].downcase)+'"' === input[0].downcase
+    if entry['name'].downcase === input[0].downcase
       count += 1 
       uid = entry['uid']
     end
@@ -162,7 +163,7 @@ IO.foreach "data.csv" do |line|
   # Determine what to do
   if count === 0
     # Create new person
-    create(input)
+    create(input, group)
   elsif count === 1
     # Update existing person
     update(uid, input)
