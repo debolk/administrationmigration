@@ -88,7 +88,9 @@ def create(params, membership)
     membership: membership,
   }
   begin
-    data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+    unless params[15].nil?
+      data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+    end
   rescue
     $problems.write "#{$index}, #{data[:firstname]} #{data[:lastname]}, Birthdate ignored\n"
   end
@@ -122,7 +124,9 @@ def update(uid, params)
     address: [params[10], params[11], params[12]].join(' '),
   }
   begin
-    data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+    unless params[15].nil?
+      data[:dateofbirth] = Date.strptime(params[15], '%d-%m-%Y').strftime('%Y-%m-%d')
+    end
   rescue
     $problems.write "#{$index}, #{data[:firstname]} #{data[:lastname]}, Birthdate ignored\n"
   end
