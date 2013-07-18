@@ -113,7 +113,7 @@ def create(params, membership)
 end
 
 # Updates an existing user
-def update(uid, params)
+def update(uid, params, membership)
   data = {
     initials: (params[4].nil? ? params[5][0] : params[4].tr('^a-zA-Z', '')),
     email: (params[3].nil? ? 'unknown@nieuwedelft.nl.invalid' : params[3]),
@@ -122,6 +122,7 @@ def update(uid, params)
     mobile: params[2],
     phone_parents: params[24],
     address: [params[10], params[11], params[12]].join(' '),
+    membership: membership,
   }
   begin
     unless params[15].nil?
@@ -191,7 +192,7 @@ CSV.foreach("data.csv") do |input|
     create(input, group)
   elsif count === 1
     # Update existing person
-    update(uid, input)
+    update(uid, input, group)
   else
     # Log as a problematic case with rule number and line
     $problems.write "#{$index}, #{input[0]}\n"
